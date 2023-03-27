@@ -11,3 +11,10 @@ class Config:
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'uploads')
     ALLOWED_EXTENSIONS = {'pdf'}
 
+
+from app import flask_app
+
+if __name__ == "__main__":
+    flask_app.run(debug=True, port=5001)
+
+
