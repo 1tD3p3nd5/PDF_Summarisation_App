@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT PDF Summary</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the ChatGPT PDF Summary Interface!</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Upload a PDF file:</h2>
+            <form id="pdf_upload_form" enctype="multipart/form-data">
+                <input type="file" id="pdf_file" name="pdf_file" accept=".pdf">
+                <button id="process_pdf" type="submit">Process PDF</button>
+                <p id="processing_message" style="display:none;">Processing, please wait...</p>
+            </form>
+        </section>
+        <section>
+            <h2>Summary:</h2>
+            <div id="summary">The summarized text will appear here once the PDF is processed.</div>
+        </section>
+    </main>
+    
+
+    <script src="/static/js/main.js">
+       function displayResponse(response) {
+            $("#summary").html(response);
+        }
+
+
+        $(document).ready(function () {
+            $("#pdf_upload_form").submit(function (event) {
+                event.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    url: "/upload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        displayResponse(data.response);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert("An error occurred while processing the PDF.");
+                    },
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
